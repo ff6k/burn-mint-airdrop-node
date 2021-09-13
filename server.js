@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Web3 = require('web3');
 const fs = require("fs");
-const config = require('./config.json');
 const contractJson = fs.readFileSync('./abi.json');
 const Web3WsProvider = require('web3-providers-ws');
 const HDWalletProvider = require("truffle-hdwallet-provider");
