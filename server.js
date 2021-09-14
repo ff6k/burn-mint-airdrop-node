@@ -30,28 +30,71 @@ app.route('/mint').post(async (req, res) => {
     const { toAddress, amount } = req.body;
     const [account] = await web3.eth.getAccounts();
 
-    contract.methods.mint(toAddress, amount)
-        .send({
-            from: account,
-            gasLimit: 100000,
-            type: '0x2'
+    contract.methods.mint(toAddress, amount).estimateGas({ from: account })
+        .then(gasAmount => {
+            contract.methods.mint(toAddress, amount)
+                .send({
+                    from: account,
+                    gasLimit: gasAmount,
+                    type: '0x2'
+                })
+                .then(result => {
+                    res.send(result)
+                })
+                .catch(error => {
+                    res.status(404).send(error)
+                })
         })
-        .then(result => res.send(result))
-        .catch(error => res.status(404).send(error))
+        .catch(err => {
+            res.status(404).send(err)
+        })
 });
 
 app.route('/burn').post(async (req, res) => {
     const { amount } = req.body;
     const [account] = await web3.eth.getAccounts();
-
-    contract.methods.burn(amount)
-        .send({
-            from: account,
-            gasLimit: 100000,
-            type: '0x2'
+    contract.methods.burn(amount).estimateGas({ from: account })
+        .then(gasAmount => {
+            contract.methods.burn(amount)
+                .send({
+                    from: account,
+                    gasLimit: gasAmount,
+                    type: '0x2'
+                })
+                .then(result => {
+                    res.send(result)
+                })
+                .catch(error => {
+                    res.status(404).send(error)
+                })
         })
-        .then(result => res.send(result))
-        .catch(error => res.status(404).send(error))
+        .catch(err => {
+            res.status(404).send(err)
+        })
 })
+
+app.route('/airdrop').post(async (req, res) => {
+    const { recipient, amount } = req.body;
+    const [account] = await web3.eth.getAccounts();
+
+    contract.methods.getAirdrop(recipient, amount).estimateGas({ from: account })
+        .then(gasAmount => {
+            contract.methods.getAirdrop(recipient, amount)
+                .send({
+                    from: account,
+                    gasLimit: gasAmount,
+                    type: '0x2'
+                })
+                .then(result => {
+                    res.send(result)
+                })
+                .catch(error => {
+                    res.status(404).send(error)
+                })
+        })
+        .catch(err => {
+            res.status(404).send(err)
+        })
+});
 
 app.listen(port, () => console.log(`API server running on port ${port}`));
