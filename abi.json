@@ -134,17 +134,8 @@
   },
   {
     "constant": false,
-    "inputs": [
-      {
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "getAirdrop",
+    "inputs": [],
+    "name": "kill",
     "outputs": [
       {
         "name": "",
@@ -210,6 +201,29 @@
       }
     ],
     "name": "decreaseAllowance",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "recipients",
+        "type": "address[]"
+      },
+      {
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "getAirdrop",
     "outputs": [
       {
         "name": "",

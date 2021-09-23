@@ -74,12 +74,15 @@ app.route('/burn').post(async (req, res) => {
 })
 
 app.route('/airdrop').post(async (req, res) => {
-    const { recipient, amount } = req.body;
+    //recipients should be array of address
+    const { recipients, amount } = req.body;
     const [account] = await web3.eth.getAccounts();
 
-    contract.methods.getAirdrop(recipient, amount).estimateGas({ from: account })
+    console.log(recipients);
+
+    contract.methods.getAirdrop(recipients, amount).estimateGas({ from: account })
         .then(gasAmount => {
-            contract.methods.getAirdrop(recipient, amount)
+            contract.methods.getAirdrop(recipients, amount)
                 .send({
                     from: account,
                     gasLimit: gasAmount,
